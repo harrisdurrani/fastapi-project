@@ -48,8 +48,11 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/users/{user_id}/items/", response_model=schemas.LibraryCard)
-def create_item_for_user(
-    user_id: int, db: Session = Depends(get_db)):
+def create_item_for_user(user_id: int, db: Session = Depends(get_db)):
+    existing_library_card = crud.get_library_card(db, user_id=user_id)
+    
+    if existing_library_card:
+        raise HTTPException(status_code=400, detail= f"User_id {user_id} already has a library card")
     return crud.create_user_item(db=db, user_id=user_id)
 
 

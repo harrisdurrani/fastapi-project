@@ -37,6 +37,9 @@ def create_user(db: Session, user: schemas.UserCreate):
 def get_items(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.LibraryCard).offset(skip).limit(limit).all()
 
+def get_library_card(db: Session, user_id: int):
+    return db.query(models.LibraryCard).filter(models.LibraryCard.owner_id == user_id).first()
+
 
 def create_user_item(db: Session, user_id: int):
     db_item = models.LibraryCard(owner_id=user_id)
