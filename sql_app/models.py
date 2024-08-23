@@ -30,3 +30,13 @@ class Item(Base):
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="items")
+
+class Book(Base):
+    __tablename__ = "books"
+    id = Column(Integer, primary_key=True)
+    isbn = Column(Integer, nullable=False)
+    title = Column(String, nullable=False)
+    book_author = Column(String, nullable=False)
+    publication_year = Column(Integer, nullable=False)
+    publisher = Column(String, nullable=False)
+    image_url = Column(String)

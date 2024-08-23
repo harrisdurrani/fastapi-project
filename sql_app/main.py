@@ -1,24 +1,21 @@
 from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, Path
 from sqlalchemy.orm import Session
-
-from . import crud, models, schemas
+from sql_app import crud, models, schemas
 from .database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
-
 app = FastAPI()
 
-
 #dependency
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -52,8 +49,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/users/{user_id}/items/", response_model=schemas.Item)
 def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
-):
+    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)):
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
 
@@ -61,3 +57,18 @@ def create_item_for_user(
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
+
+
+@app.get("/book/{title}", response_model=schemas.BookResponse)
+def get_book(title: str, db: Session = Depends(get_db)):
+    book = crud.get_book(db=db, book_title=title)
+    return book
+
+
+@app.post("/books/", response_model=schemas.BookResponse)
+def create_book(book: schemas.BaseBook, db: Session = Depends(get_db)):
+    existing_book = crud.get_book(db, book_title= book.title)
+    if existing_book:
+        raise HTTPException(status_code=400, detail="Book already in catalog")
+    return crud.create_book(db, book)
+

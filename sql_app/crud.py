@@ -1,7 +1,5 @@
 from sqlalchemy.orm import Session
-
-from . import models, schemas
-
+from sql_app import models, schemas
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -10,8 +8,14 @@ def get_user(db: Session, user_id: int):
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
+
 def get_user_by_dob(db: Session, dob: str):
     return db.query(models.User).filter(models.User.dob == dob).first()
+    
+
+def get_book(db:Session, book_title:str):
+    return db.query(models.Book).filter(models.Book.title == book_title).first()
+
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
@@ -29,12 +33,23 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+
 def get_items(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Item).offset(skip).limit(limit).all()
 
 
 def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db_item = models.Item(**item.model_dump(), owner_id=user_id)
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+
+def create_book(db: Session, book: schemas.BaseBook):
+    db_item = models.Book(
+        isbn=book.isbn, title= book.title, book_author = book.book_author
+    )
     db.add(db_item)
     db.commit()
     db.refresh(db_item)

@@ -1,7 +1,7 @@
 [project]
-name = ""
-version = ""
-description = ""
+name = "fastapi-project"
+version = "0.1.0"
+description = "Default template for PDM package"
 authors = [
     {name = "harrisdurrani", email = "harris.durrani@hotmail.com"},
 ]
@@ -10,8 +10,12 @@ dependencies = [
     "uvicorn[standard]>=0.28.0",
     "sqlalchemy>=2.0.28",
     "pandas>=2.2.1",
+    "requests>=2.31.0",
 ]
-requires-python = ">=3.11"
+requires-python = "==3.11.*"
 readme = "README.md"
 license = {text = "MIT"}
 
+
+[tool.pdm]
+distribution = false
