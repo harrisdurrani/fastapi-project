@@ -9,4 +9,4 @@
 
 # Comments
 #### I will periodically include comments that track current changes to showcase progress.
-
+#### August 23 update: There are now 3 endpoints for users, books and library cards. Each library card is now associated with a user. The next step is to create relationships that associate each checkedout book with a library card
