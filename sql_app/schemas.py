@@ -1,19 +1,16 @@
 from pydantic import BaseModel
 from sqlalchemy.types import Date
 
-class ItemBase(BaseModel):
-    title: str
+class LibraryCardBase(BaseModel):
+    card_no: int
     description: str | None = None
 
 
-class ItemCreate(ItemBase):
+class LibraryCardCreate(LibraryCardBase):
     pass
 
-
-class Item(ItemBase):
-    id: int
+class LibraryCard(LibraryCardBase):
     owner_id: int
-
 
 class UserBase(BaseModel):
     first_name: str
@@ -33,7 +30,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    items: list[Item] = []
+    library_card: list[LibraryCardCreate] = []
 
 
 class BaseBook(BaseModel):

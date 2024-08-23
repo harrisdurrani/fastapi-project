@@ -18,18 +18,17 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
 
-    items = relationship("Item", back_populates="owner")
+    librarycard = relationship("LibraryCard", back_populates="owner")
 
 
-class Item(Base):
-    __tablename__ = "items"
+class LibraryCard(Base):
+    __tablename__ = "librarycard"
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String, index=True)
+    card_no = Column(Integer, primary_key=True)
     description = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
-    owner = relationship("User", back_populates="items")
+    owner = relationship("User", back_populates="librarycard")
 
 class Book(Base):
     __tablename__ = "books"
