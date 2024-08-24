@@ -5,7 +5,6 @@ from .database import Base
 
 class User(Base):
     __tablename__ = "users"
-
     id = Column(Integer, primary_key=True)
     first_name = Column(String, index=True)
     last_name = Column(String, index=True)
@@ -17,17 +16,14 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-
-    librarycard = relationship("LibraryCard", back_populates="owner")
+    librarycard = relationship("LibraryCard", uselist=False, back_populates="owner")
 
 
 class LibraryCard(Base):
     __tablename__ = "librarycard"
-
     card_no = Column(Integer, primary_key=True)
     description = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
-
     owner = relationship("User", back_populates="librarycard")
 
 class Book(Base):
