@@ -5,7 +5,7 @@ from .database import Base
 
 class User(Base):
     __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, primary_key=True)
     first_name = Column(String, index=True)
     last_name = Column(String, index=True)
     dob = Column(String, index=True)
@@ -23,15 +23,22 @@ class LibraryCard(Base):
     __tablename__ = "librarycard"
     card_no = Column(Integer, primary_key=True)
     description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner_id = Column(Integer, ForeignKey("users.user_id"))
     owner = relationship("User", back_populates="librarycard")
 
 class Book(Base):
     __tablename__ = "books"
-    id = Column(Integer, primary_key=True)
+    book_id = Column(Integer, primary_key=True)
     isbn = Column(Integer, nullable=False)
     title = Column(String, nullable=False)
     book_author = Column(String, nullable=False)
-    publication_year = Column(Integer, nullable=False)
-    publisher = Column(String, nullable=False)
-    image_url = Column(String)
+    publication_year = Column(Integer, nullable=True)
+    publisher = Column(String, nullable=True)
+    image_url = Column(String, nullable=True)
+
+class Checkout(Base):
+    __tablename__ = "checked_out"
+    user_id = Column(Integer, primary_key=True)
+    card_no = Column(Integer, primary_key=True)
+    book_id = Column(Integer, primary_key=True)
+    checkout_status = Column(Boolean, default=False)

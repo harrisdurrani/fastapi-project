@@ -76,3 +76,5 @@ def create_book(book: schemas.BaseBook, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Book already in catalog")
     return crud.create_book(db, book)
 
+# @app.patch("/checkout_book", response_model = schemas.CheckoutBook)
+# def 

@@ -51,7 +51,8 @@ def create_user_item(db: Session, user_id: int):
 
 def create_book(db: Session, book: schemas.BaseBook):
     db_item = models.Book(
-        isbn=book.isbn, title= book.title, book_author = book.book_author
+        isbn=book.isbn, title=book.title, book_author=book.book_author, publication_year=book.publication_year, 
+        publisher=book.publisher, image_url=book.image_URL
     )
     db.add(db_item)
     db.commit()

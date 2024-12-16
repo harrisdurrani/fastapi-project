@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field
 from sqlalchemy.types import Date
 
+from sql_app.models import Book
+
 class LibraryCardBase(BaseModel):
     card_no: int
     description: str | None = None
@@ -26,9 +28,9 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: int
+    user_id: int
     is_active: bool
-    librarycard: LibraryCardBase
+    librarycard: LibraryCard
 
 
 class BaseBook(BaseModel):
@@ -41,4 +43,9 @@ class BaseBook(BaseModel):
 
 
 class BookResponse(BaseBook):
-    id: int
+    book_id: int
+    checkout_status: bool = False
+
+class CheckoutBook(BaseModel):
+    user: User
+    book: BookResponse
